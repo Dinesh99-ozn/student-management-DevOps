@@ -80,7 +80,7 @@ services:
         VITE_ACADEMIC_API_URL: http://localhost:4003/api
     restart: unless-stopped
     ports:
-      - "3000:80"
+      - "3001:80"
     depends_on:
       - auth-service
       - student-service
