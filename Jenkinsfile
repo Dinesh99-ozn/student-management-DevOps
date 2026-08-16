@@ -5,14 +5,12 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                // Get the latest code from Git
                 checkout scm
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                // Install dependencies for each microservice
                 bat 'cd services\\auth-service && npm install'
                 bat 'cd services\\student-service && npm install'
                 bat 'cd services\\academic-service && npm install'
@@ -24,21 +22,18 @@ pipeline {
 
                 stage('Auth Tests') {
                     steps {
-                        // Test authentication service
                         bat 'cd services\\auth-service && npm test -- --runInBand'
                     }
                 }
 
                 stage('Student Tests') {
                     steps {
-                        // Test student service
                         bat 'cd services\\student-service && npm test -- --runInBand'
                     }
                 }
 
                 stage('Academic Tests') {
                     steps {
-                        // Test academic service
                         bat 'cd services\\academic-service && npm test -- --runInBand'
                     }
                 }
@@ -47,19 +42,37 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                // Build all application Docker images
                 bat 'docker compose build'
+            }
+        }
+
+        stage('Docker Deploy') {
+            steps {
+                bat 'docker compose up -d'
+            }
+        }
+
+        stage('Health Check') {
+            steps {
+                bat 'curl.exe -f http://localhost:3002'
+            }
+        }
+
+        stage('Monitoring & Logs') {
+            steps {
+                bat 'docker compose ps'
+                bat 'docker compose logs --tail=30'
             }
         }
     }
 
     post {
         success {
-            echo 'CI pipeline completed successfully!'
+            echo 'CI/CD pipeline completed successfully!'
         }
 
         failure {
-            echo 'CI pipeline failed. Check the test/build logs.'
+            echo 'Pipeline failed. Check the logs.'
         }
     }
 }
