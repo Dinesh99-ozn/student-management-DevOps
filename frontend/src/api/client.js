@@ -5,9 +5,9 @@
 import axios from 'axios';
 
 // Local Docker development API URLs.
-const AUTH_URL = 'http://localhost:4001/api';
-const STUDENT_URL = 'http://localhost:4002/api';
-const ACADEMIC_URL = 'http://localhost:4003/api';
+const AUTH_URL = 'http://localhost:4101/api';
+const STUDENT_URL = 'http://localhost:4102/api';
+const ACADEMIC_URL = 'http://localhost:4103/api';
 
 function createClient(baseURL) {
   const instance = axios.create({

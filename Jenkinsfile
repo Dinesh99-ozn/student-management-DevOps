@@ -48,7 +48,10 @@ pipeline {
 
         stage('Docker Deploy') {
             steps {
-                bat 'docker compose up -d'
+                bat '''
+                docker compose down --remove-orphans
+                docker compose up -d
+                '''
             }
         }
 
@@ -75,7 +78,10 @@ pipeline {
         }
 
         failure {
-            echo 'Pipeline failed. Check the logs.'
+            echo 'Deployment failed. Cleaning up failed deployment...'
+            bat '''
+            docker compose down --remove-orphans
+            '''
         }
     }
 }
