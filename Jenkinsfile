@@ -58,9 +58,9 @@ pipeline {
         stage('Health Check') {
             steps {
                 bat 'curl.exe -f http://localhost:3101'
-                bat 'curl.exe -f http://localhost:4101'
-                bat 'curl.exe -f http://localhost:4102'
-                bat 'curl.exe -f http://localhost:4103'
+                bat 'curl.exe -f http://localhost:4101/health'
+                bat 'curl.exe -f http://localhost:4102/health'
+                bat 'curl.exe -f http://localhost:4103/health'
             }
         }
 
