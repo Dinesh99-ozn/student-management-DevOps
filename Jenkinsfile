@@ -8,7 +8,15 @@ pipeline {
                 checkout scm
             }
         }
-
+    stage('EC2 Connection Test') {
+        steps {
+            sshagent(credentials: ['ec2-deploy-key']) {
+                bat '''
+                ssh -o StrictHostKeyChecking=no ec2-user@51.21.224.44 "echo EC2-JENKINS-SSH-OK"
+                '''
+            }
+        }
+    }
         stage('Install Dependencies') {
             steps {
                 bat 'cd services\\auth-service && npm install'
