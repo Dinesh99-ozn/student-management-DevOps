@@ -54,7 +54,11 @@ pipeline {
             steps {
                 sshagent(credentials: ['ec2-deploy-key']) {
                     bat '''
-                    ssh -o StrictHostKeyChecking=no ec2-user@51.21.224.44 "cd /home/ec2-user/student-management && git pull origin master && docker compose build && docker compose up -d"
+                    ssh -o StrictHostKeyChecking=no ec2-user@51.21.224.44 "mkdir -p /home/ec2-user/student-management"
+
+                    scp -o StrictHostKeyChecking=no -r database services frontend docker-compose.yml docker-compose.rollback.yml README.md Jenkinsfile ec2-user@51.21.224.44:/home/ec2-user/student-management/
+
+                    ssh -o StrictHostKeyChecking=no ec2-user@51.21.224.44 "cd /home/ec2-user/student-management && docker compose build && docker compose up -d"
                     '''
                 }
             }
